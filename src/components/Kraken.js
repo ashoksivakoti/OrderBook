@@ -57,9 +57,10 @@ const Kraken = ({ searchQuery }) => {
           setKrakenBuyers(prevBuyers => updateOrderBook(prevBuyers, updatedBuyers));
 
           setKrakenSellers(prevSellers => updateOrderBook(prevSellers, updatedSellers));
+
         }
-      }
-    };
+    }
+};
 
     ws.onclose = () => {
       console.log('WebSocket connection closed');
