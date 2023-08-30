@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/OrderBook/static/css/main.580b35b1.css",
+    "main.js": "/OrderBook/static/js/main.b69ff651.js",
+    "index.html": "/OrderBook/index.html",
+    "main.580b35b1.css.map": "/OrderBook/static/css/main.580b35b1.css.map",
+    "main.b69ff651.js.map": "/OrderBook/static/js/main.b69ff651.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.580b35b1.css",
+    "static/js/main.b69ff651.js"
+  ]
+}
