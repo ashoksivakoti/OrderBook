@@ -91,9 +91,6 @@ const Kraken = ({ searchQuery }) => {
       .slice(0, 10);
   };
 
-  const roundTo5Decimal = (value) => {
-    return parseFloat(value).toFixed(6);
-  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 sm:px-6 lg:px-8">

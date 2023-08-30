@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useOrderBook } from "../context/OrderBookContext";
+import axios from "axios";
 
 const Binance = ({ searchQuery }) => {
     const { binanceBuyers, setBinanceBuyers, binanceSellers, setBinanceSellers } = useOrderBook();
@@ -47,14 +48,11 @@ const Binance = ({ searchQuery }) => {
     setSocket(newSocket);
   };
 
-  const roundTo5Decimal = (value) => {
-    return parseFloat(value).toFixed(6);
-  };
+
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 sm:px-6 lg:px-8">
         <h2 className='text-xl font-bold text-center mb-4'>Binance Orderbook</h2>
-      {binanceBuyers.length > 0 && binanceSellers.length > 0 && (
         <div className="grid grid-cols-2 gap-8">
           <div>
             <h2 className="text-xl font-semibold mb-4 text-center">Buy Orders</h2>
@@ -95,7 +93,6 @@ const Binance = ({ searchQuery }) => {
             </table>
           </div>
         </div>
-      )}
     </div>
   );
 };

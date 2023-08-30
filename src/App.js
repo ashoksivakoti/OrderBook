@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Binance from './components/Binance';
 import Kraken from './components/Kraken'; 
 import ConsolidatedOrderBook from './components/ConsolidatedOrderBook';
+import axios from 'axios';
 
 const App = () => {
   const [selectedExchanges, setSelectedExchanges] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searching, setSearching] = useState(false);
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
 
   const handleExchangeCheckboxChange = (event) => {
     const exchange = event.target.value;
@@ -23,6 +25,32 @@ const App = () => {
 
   const handleSearchClick = () => {
     setSearching(true);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearchClick();
+    }
+  };
+
+  useEffect(() => {
+    fetchSymbolPairs()
+  })
+  
+  const fetchSymbolPairs = () => {
+    axios
+      .get('https://api.kraken.com/0/public/AssetPairs')
+      .then(response => {
+        const suggestions = [];
+        const symb = Object.keys(response.data.result);
+        for (const symbol of symb) {
+          if (symbol && response.data.result[symbol].wsname) {
+            suggestions.push(response.data.result[symbol].wsname);
+          }
+        }
+        setSearchSuggestions(suggestions);
+      })
+      .catch(error => console.error(error));
   };
 
   return (
@@ -50,13 +78,20 @@ const App = () => {
           </label>
         </div>
         <div className="flex mb-4">
-          <input
-            type="text"
-            placeholder="Enter trading pair (ex:- xrp/eth)"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="border rounded p-2 flex-grow mr-2"
-          />
+        <input
+  type="text"
+  placeholder="Enter trading pair (ex:- xrp/eth)"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  onKeyDown={handleKeyPress}
+  className="border rounded p-2 flex-grow mr-2"
+  list="symbolSuggestions"
+/>
+<datalist id="symbolSuggestions">
+  {searchSuggestions.map((suggestion, index) => (
+    <option key={index} value={suggestion} />
+  ))}
+</datalist>
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             onClick={handleSearchClick}
