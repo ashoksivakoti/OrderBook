@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useOrderBook } from '../context/OrderBookContext';
 
-const Kraken = ({ searchQuery }) => {
-    const { krakenBuyers, setKrakenBuyers, krakenSellers, setKrakenSellers } = useOrderBook();
-  const webSocketRef = useRef(null);
+const Kraken = () => {
+    const { krakenBuyers, setKrakenBuyers, krakenSellers, setKrakenSellers, searchQuery } = useOrderBook();
+    const [socket, setSocket] = useState(null)
 
   useEffect(() => {
     if (searchQuery) {
@@ -13,32 +13,38 @@ const Kraken = ({ searchQuery }) => {
     } else {
       setKrakenBuyers([]);
       setKrakenSellers([]);
-      if (webSocketRef.current) {
-        webSocketRef.current.close();
+      if (socket) {
+        socket.close();
       }
     }
     return () => {
-      if (webSocketRef.current) {
-        webSocketRef.current.close();
-      }
+    closeSocket();
     };
   }, [searchQuery]);
 
-  const connectWebSocket = () => {
+  const closeSocket = () => {
+    if (socket) {
+      socket.close();
+    }
+  };
+
+  const connectWebSocket = (pair) => {
+    closeSocket()
+
     const ws = new WebSocket('wss://ws.kraken.com');
-    webSocketRef.current = ws;
 
     ws.onopen = () => {
       ws.send(
         JSON.stringify({
           event: 'subscribe',
-          pair: [searchQuery.toUpperCase()],
+          pair: [pair.toUpperCase()],
           subscription: {
             name: 'book',
             depth: 100,
           },
         })
       );
+      setSocket(ws)
     };
 
     ws.onmessage = event => {
@@ -61,10 +67,6 @@ const Kraken = ({ searchQuery }) => {
         }
     }
 };
-
-    ws.onclose = () => {
-      console.log('WebSocket connection closed');
-    };
   };
 
   const updateOrderBook = (prevOrderBook, newEntries) => {

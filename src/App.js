@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Binance from './components/Binance';
 import Kraken from './components/Kraken'; 
 import ConsolidatedOrderBook from './components/ConsolidatedOrderBook';
-import axios from 'axios';
 import { useOrderBook } from './context/OrderBookContext';
+import { searchSuggestions } from './context/constant';
 
 
 const App = () => {
-  const{intersection} = useOrderBook()
+  const{ searchQuery, setSearchQuery} = useOrderBook()
   const [selectedExchanges, setSelectedExchanges] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
   const [searching, setSearching] = useState(false);
 
   const handleExchangeCheckboxChange = (event) => {
@@ -47,6 +46,7 @@ const App = () => {
               value="binance"
               checked={selectedExchanges.includes('binance')}
               onChange={handleExchangeCheckboxChange}
+              className='mr-2'
             />
             Binance
           </label>
@@ -56,6 +56,7 @@ const App = () => {
               value="kraken"
               checked={selectedExchanges.includes('kraken')}
               onChange={handleExchangeCheckboxChange}
+              className='mr-2'
             />
             Kraken
           </label>
@@ -63,7 +64,7 @@ const App = () => {
         <div className="flex mb-4">
         <input
   type="text"
-  placeholder="Please include ( / ) between pairs"
+  placeholder="Please select a trading pair"
   value={searchQuery}
   onChange={(e) => setSearchQuery(e.target.value)}
   onKeyDown={handleKeyPress}
@@ -71,7 +72,7 @@ const App = () => {
   list="symbolSuggestions"
 />
 <datalist id="symbolSuggestions">
-  {intersection.map((suggestion, index) => (
+  {searchSuggestions.map((suggestion, index) => (
     <option key={index} value={suggestion} />
   ))}
 </datalist>
@@ -85,11 +86,11 @@ const App = () => {
         {selectedExchanges.length === 0 && searching && (
           <p className="text-center text-red-600">Please select an exchange to view the order book.</p>
         )}
-        {selectedExchanges.includes('binance') && !selectedExchanges.includes('kraken') && (
-          <Binance searchQuery={searching ? searchQuery : ''} />
+        {selectedExchanges.includes('binance') && !selectedExchanges.includes('kraken') &&  (
+          <Binance />
         )}
-        {selectedExchanges.includes('kraken') && !selectedExchanges.includes('binance') && (
-          <Kraken searchQuery={searching ? searchQuery : ''} />
+        {selectedExchanges.includes('kraken') && !selectedExchanges.includes('binance') &&  (
+          <Kraken />
         )}
         {selectedExchanges.includes('binance') && selectedExchanges.includes('kraken') && (
           <ConsolidatedOrderBook />

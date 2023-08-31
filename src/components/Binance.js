@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useOrderBook } from "../context/OrderBookContext";
-import axios from "axios";
 
-const Binance = ({ searchQuery }) => {
-    const { binanceBuyers, setBinanceBuyers, binanceSellers, setBinanceSellers } = useOrderBook();
+const Binance = () => {
+    const { binanceBuyers, setBinanceBuyers, binanceSellers, setBinanceSellers, searchQuery } = useOrderBook();
   const [error, setError] = useState(null);
   const [socket, setSocket] = useState(null);
 
@@ -38,14 +37,17 @@ const Binance = ({ searchQuery }) => {
     const newSocket = new WebSocket(
       `wss://stream.binance.com:9443/ws/${pair.toLowerCase()}@depth10`
     );
+    
+    newSocket.onopen = () => {
+        setSocket(newSocket)
+    }
 
-    newSocket.onmessage = function (event) {
+    newSocket.onmessage = (event) => {
         const parsedMessage = JSON.parse(event.data);
       setBinanceBuyers(parsedMessage.bids);
       setBinanceSellers(parsedMessage.asks);
     };
 
-    setSocket(newSocket);
   };
 
 
