@@ -7,7 +7,7 @@ import { searchSuggestions } from './context/constant';
 
 
 const App = () => {
-  const{ searchQuery, setSearchQuery} = useOrderBook()
+  const{ searchQuery, setSearchQuery, binanceBuyers, krakenSellers, krakenBuyers} = useOrderBook()
   const [selectedExchanges, setSelectedExchanges] = useState([]);
   const [searching, setSearching] = useState(false);
 

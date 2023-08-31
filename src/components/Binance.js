@@ -1,56 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useOrderBook } from "../context/OrderBookContext";
 
 const Binance = () => {
-    const { binanceBuyers, setBinanceBuyers, binanceSellers, setBinanceSellers, searchQuery } = useOrderBook();
-  const [error, setError] = useState(null);
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    if (searchQuery) {
-        setBinanceBuyers([])
-        setBinanceSellers([])
-        const formattedQuery = searchQuery.replace('/', '').toLowerCase();
-      connectSocket(formattedQuery);
-    } else {
-        setBinanceBuyers([]);
-      setBinanceSellers([]);
-      setError(null);
-      if (socket) {
-        socket.close();
-      }
-    }
-    return () => {
-        closeSocket();
-      };
-  }, [searchQuery]);
-
-  const closeSocket = () => {
-    if (socket) {
-      socket.close();
-    }
-  };
-
-  const connectSocket = (pair) => {
-    closeSocket();
-
-    const newSocket = new WebSocket(
-      `wss://stream.binance.com:9443/ws/${pair.toLowerCase()}@depth10`
-    );
-    
-    newSocket.onopen = () => {
-        setSocket(newSocket)
-    }
-
-    newSocket.onmessage = (event) => {
-        const parsedMessage = JSON.parse(event.data);
-      setBinanceBuyers(parsedMessage.bids);
-      setBinanceSellers(parsedMessage.asks);
-    };
-
-  };
-
-
+    const { binanceBuyers, binanceSellers} = useOrderBook();
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 sm:px-6 lg:px-8">
