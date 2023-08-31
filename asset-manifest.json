@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/OrderBook/static/css/main.c4dd9a5c.css",
-    "main.js": "/OrderBook/static/js/main.c83d6168.js",
+    "main.js": "/OrderBook/static/js/main.df99349f.js",
     "index.html": "/OrderBook/index.html",
     "main.c4dd9a5c.css.map": "/OrderBook/static/css/main.c4dd9a5c.css.map",
-    "main.c83d6168.js.map": "/OrderBook/static/js/main.c83d6168.js.map"
+    "main.df99349f.js.map": "/OrderBook/static/js/main.df99349f.js.map"
   },
   "entrypoints": [
     "static/css/main.c4dd9a5c.css",
-    "static/js/main.c83d6168.js"
+    "static/js/main.df99349f.js"
   ]
 }
