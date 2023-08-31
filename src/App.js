@@ -29,8 +29,9 @@ const App = () => {
   };
 
   const handleKeyPress = (event) => {
+
     if (event.key === 'Enter') {
-      handleSearchClick();
+      setSearching(true)
     }
   };
 

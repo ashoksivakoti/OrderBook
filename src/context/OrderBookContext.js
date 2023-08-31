@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 const OrderBookContext = createContext();
@@ -8,11 +8,11 @@ export const OrderBookProvider = ({ children }) => {
   const [krakenSellers, setKrakenSellers] = useState([]);
   const [binanceBuyers, setBinanceBuyers] = useState([]);
   const [binanceSellers, setBinanceSellers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [intersection,setIntersection] = useState([])
   const [bSymbols, setBsymbols] = useState([]);
   const [kSymbols, setKsymbols] = useState([]);
-  const [intersection, setIntersection] = useState([]);
-
-  useEffect(() => {
+useEffect(() => {
     getSymbols();
     fetchSymbols();
   }, []);
@@ -55,6 +55,8 @@ export const OrderBookProvider = ({ children }) => {
         setBinanceBuyers,
         binanceSellers,
         setBinanceSellers,
+        searchQuery,
+        setSearchQuery,
         intersection
       }}
     >
