@@ -171,9 +171,6 @@ export const OrderBookProvider = ({ children }) => {
     return updatedOrderBook.sort((a, b) => a[0] - b[0]).slice(0, 10);
   };
 
-  console.log("binance", isBinanceConnected);
-  console.log("kraken", isKrakenConnected);
-
   // Fetch trading symbols and determine the intersection values
   const [bSymbols, setBsymbols] = useState([]);
   const [kSymbols, setKsymbols] = useState([]);

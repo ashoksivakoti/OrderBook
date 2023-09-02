@@ -72,9 +72,6 @@ const App = () => {
       handleSearchClick();
     }
   };
-  console.log("kraken : ", krakenBuyers);
-  console.log("binance : ", binanceBuyers);
-  console.log("intersection values", intersectionValues);
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 sm:px-6 lg:px-8">
